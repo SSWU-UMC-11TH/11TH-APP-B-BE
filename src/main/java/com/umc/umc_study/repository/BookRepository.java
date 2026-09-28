@@ -33,4 +33,13 @@ public class BookRepository {
                 body.get("description")
         );
     }
+
+    // 카테고리별 도서 목록 조회
+    public List<Map<String, Object>> findByCategoryId(Long categoryId) {
+        String sql = "SELECT book_id, category_id, title, description, is_available " +
+                "FROM book WHERE category_id = ?";
+
+        //바인딩
+        return jdbcTemplate.queryForList(sql, categoryId);
+    }
 }

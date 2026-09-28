@@ -22,4 +22,7 @@ public class BookService {
         bookRepository.save(body);
     }
 
+    public List<Map<String, Object>> getBooksByCategoryId(Long categoryId) {
+        return bookRepository.findByCategoryId(categoryId);
+    }
 }

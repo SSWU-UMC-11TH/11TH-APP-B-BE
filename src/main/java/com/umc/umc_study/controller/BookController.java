@@ -23,10 +23,14 @@ public class BookController {
 
     // BookController.java에 추가
 
-    // POST http://localhost:8080/books
     @PostMapping
     public String createBook(@RequestBody Map<String, Object> body){
         bookService.createBook(body);
         return "도서 등록이 완료되었습니다!";
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public List<Map<String, Object>> getBooksByCategory(@PathVariable Long categoryId) {
+        return bookService.getBooksByCategoryId(categoryId);
     }
 }
