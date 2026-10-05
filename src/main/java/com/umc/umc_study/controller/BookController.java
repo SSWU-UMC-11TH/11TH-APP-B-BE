@@ -1,8 +1,12 @@
 package com.umc.umc_study.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import com.umc.umc_study.dto.BookResponse;
+import com.umc.umc_study.dto.CreateBookRequest;
 import com.umc.umc_study.service.BookService;
+import jakarta.validation.Valid; // @Valid import 추가
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -15,16 +19,14 @@ public class BookController {
     // 주방장(Service)을 주입받아 카운터 옆에 대기시킵니다.
     private final BookService bookService;
 
-    // 3. HTTP GET 방식으로 /books 요청이 들어왔을 때 이 메서드가 실행됩니다.
-    @GetMapping
-    public List<Map<String, Object>> getBooks() {
+    /* 3주차 Map 방식 (현재 주석 처리)
+    @GetMapping("/old")
+    public List<Map<String, Object>> getBooksOld() {
         return bookService.getAllBooks();
     }
 
-    // BookController.java에 추가
-
-    @PostMapping
-    public String createBook(@RequestBody Map<String, Object> body){
+    @PostMapping("/old")
+    public String createBookOld(@RequestBody Map<String, Object> body){
         bookService.createBook(body);
         return "도서 등록이 완료되었습니다!";
     }
@@ -32,5 +34,19 @@ public class BookController {
     @GetMapping("/category/{categoryId}")
     public List<Map<String, Object>> getBooksByCategory(@PathVariable Long categoryId) {
         return bookService.getBooksByCategoryId(categoryId);
+    }
+    */
+
+    // [실습 1] GET /books (도서 전체 목록 조회)
+    @GetMapping
+    public List<BookResponse> getBooks() {
+        return bookService.getBooks();
+    }
+
+    // [실습 2] POST /books (신규 도서 등록)
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookResponse createBook(@Valid @RequestBody CreateBookRequest request) {
+        return bookService.createBook(request);
     }
 }
